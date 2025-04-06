@@ -20,26 +20,33 @@ import { LocalService } from '../services/local.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'toDoList';
-  taskList: any = [];
+  taskList: any[] = [];
   count = 0;
 
-  constructor(private localeStore: LocalService) {
-  }
+  constructor(private localeStore: LocalService) {}
 
   ngOnInit(): void {
     this.taskList = tasks;
     this.count = tasks.length;
-    this.localeStore.saveData('taskList', this.taskList);
+    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
   ngOnDestroy(): void {
-   //this.localeStore.removeData('taskList');
+    //this.localeStore.removeData('taskList');
   }
 
-  @HostListener('click', ['$event.target'])
-  addTask(btn: any) {
+  addTask() {
     this.count = this.count + 1;
     const task = { name: 'Task' + this.count, id: this.count };
+
     this.taskList = [...this.taskList, task];
-    this.localeStore.saveData('taskList', this.taskList);
+    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+  }
+  updateTask(event:any, ...args: any[]) {
+    this.taskList.splice(args[0], 1, args[1]);
+    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+  }
+  deleteTask(event: any, index: number) {
+    this.taskList.splice(index, 1);
+    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
 }

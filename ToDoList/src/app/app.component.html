@@ -176,9 +176,9 @@
   </div>
   <div>
     <div class="social-links">
-      <button onclick="addTask()">Add</button>
-      <button>Update</button>
-      <button>Delete</button>
+      <button (click)="addTask()">Add</button>
+      <button (click)="updateTask(0, { name: 'Task89', id: 89 })">Update</button>
+      <button (click)="deleteTask($event, 0)">Delete</button>
     </div>
   </div>
 </main>
