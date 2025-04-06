@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatListModule} from '@angular/material/list';
+
+import { Task } from '../interfaces/task.interfaces';
 
 
 @Component({
@@ -9,5 +11,5 @@ import { MatListModule} from '@angular/material/list';
   styleUrl: './list.component.scss'
 })
 export class ListComponent {
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+  @Input() taskList?: Task [];
 }

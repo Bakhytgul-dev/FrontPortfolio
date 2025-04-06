@@ -168,14 +168,7 @@
 
 <main>
   <div>
-    <div>Hello</div>
-
-    <ul>
-      <li *ngFor="let i of taskList"> {{i.name}}</li>
-    </ul>
-  </div>
-  <div>
-    <app-list/>
+    <app-list [taskList] = 'taskList'/>
     <div class="social-links">
       <button (click)="addTask()">Add</button>
       <button (click)="updateTask($event, 0, { name: 'Task89', id: 89 })">Update</button>

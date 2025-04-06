@@ -1,21 +1,17 @@
 import {
-  afterNextRender,
   Component,
-  HostListener,
-  Inject,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { taskList as tasks } from '../data.json';
-import { NgFor } from '@angular/common';
 
 import { LocalService } from '../services/local.service';
 import { ListComponent } from './list/list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ListComponent, NgFor],
+  imports: [RouterOutlet, ListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
