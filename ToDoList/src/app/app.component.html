@@ -166,17 +166,17 @@
   }
 </style>
 
-<main >
+<main>
   <div>
     <div>Hello</div>
-  
+
     <ul>
       <li *ngFor="let i of taskList"> {{i.name}}</li>
     </ul>
   </div>
-  <div >
-    <div class="social-links" >
-      <button>Add</button>
+  <div>
+    <div class="social-links">
+      <button onclick="addTask()">Add</button>
       <button>Update</button>
       <button>Delete</button>
     </div>
