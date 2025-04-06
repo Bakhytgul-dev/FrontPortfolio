@@ -11,10 +11,11 @@ import { taskList as tasks } from '../data.json';
 import { NgFor } from '@angular/common';
 
 import { LocalService } from '../services/local.service';
+import { ListComponent } from './list/list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgFor],
+  imports: [RouterOutlet, ListComponent, NgFor],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
