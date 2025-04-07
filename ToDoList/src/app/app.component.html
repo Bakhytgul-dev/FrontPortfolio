@@ -11,15 +11,19 @@
     --gray-700: oklch(36.98% 0.014 302.71);
     --gray-400: oklch(70.9% 0.015 304.04);
 
-    --red-to-pink-to-purple-vertical-gradient: linear-gradient(180deg,
-        var(--orange-red) 0%,
-        var(--vivid-pink) 50%,
-        var(--electric-violet) 100%);
+    --red-to-pink-to-purple-vertical-gradient: linear-gradient(
+      180deg,
+      var(--orange-red) 0%,
+      var(--vivid-pink) 50%,
+      var(--electric-violet) 100%
+    );
 
-    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(90deg,
-        var(--orange-red) 0%,
-        var(--vivid-pink) 50%,
-        var(--electric-violet) 100%);
+    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
+      90deg,
+      var(--orange-red) 0%,
+      var(--vivid-pink) 50%,
+      var(--electric-violet) 100%
+    );
 
     --pill-accent: var(--bright-blue);
 
@@ -51,9 +55,6 @@
   main {
     width: 100%;
     min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 1rem;
     box-sizing: inherit;
     position: relative;
@@ -164,14 +165,25 @@
       margin-block: 1.5rem;
     }
   }
+
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+  }
 </style>
 
 <main>
+  <div class="header">
+    <button (click)="openDialog()">Add+</button>
+  </div>
   <div>
-    <app-list [taskList] = 'taskList'/>
+    <app-list [taskList]="taskList" />
     <div class="social-links">
       <button (click)="addTask()">Add</button>
-      <button (click)="updateTask($event, 0, { name: 'Task89', id: 89 })">Update</button>
+      <button (click)="updateTask($event, 0, { name: 'Task89', id: 89 })">
+        Update
+      </button>
       <button (click)="deleteTask($event, 0)">Delete</button>
     </div>
   </div>
