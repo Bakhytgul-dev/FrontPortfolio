@@ -1,9 +1,0 @@
-<mat-selection-list #tasks>
-    @for (task of taskList; track task) {
-    <mat-list-option>{{task.name}}</mat-list-option>
-    }
-</mat-selection-list>
-
-<p>
-    Options selected: {{tasks.selectedOptions.selected.length}}
-</p>

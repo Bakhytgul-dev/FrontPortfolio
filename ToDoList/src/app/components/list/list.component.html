@@ -1,0 +1,12 @@
+<mat-selection-list #tasks>
+  @for (task of taskList; track task) {
+  <mat-list-option 
+  (myClick)="onClick($event)"
+    >{{ task.name }}
+    <button mat-list-option (myClick)="edit($event)" clickable>Edit</button>
+    <button mat-list-option (myClick)="delete()" clickable>Delete</button></mat-list-option
+  >
+  }
+</mat-selection-list>
+
+<p>Options selected: {{ tasks.selectedOptions.selected.length }}</p>

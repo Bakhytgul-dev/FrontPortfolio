@@ -13,8 +13,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
 export interface DialogData {
-  animal: string;
-  name: string;
+  header: string;
+  title: string;
+  description: string;
 }
 
 @Component({
@@ -35,7 +36,8 @@ export interface DialogData {
 export class ModalComponent {
   readonly dialogRef = inject(MatDialogRef<ModalComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  readonly animal = model(this.data.animal);
+  readonly title = model(this.data.title);
+  readonly description = model(this.data.description);
 
   onNoClick(): void {
     this.dialogRef.close();

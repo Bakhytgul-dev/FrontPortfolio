@@ -18,8 +18,8 @@ import { taskList as tasks } from '../data.json';
 
 import { LocalService } from '../services/local.service';
 
-import { ModalComponent } from './modal/modal.component';
-import { ListComponent } from './list/list.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { ListComponent } from './components/list/list.component';
 
 @Component({
   selector: 'app-root',
@@ -42,19 +42,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private localeStore: LocalService) {}
 
-  readonly animal = signal('');
-  readonly name = model('');
+  readonly description = signal('');
+  readonly titleModel = model('');
   readonly dialog = inject(MatDialog);
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: { name: this.name(), animal: this.animal() },
+      data: { header: 'Add new task', title: this.titleModel(), description: this.description() },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       if (result !== undefined) {
-        this.animal.set(result);
+        //this.animal.set(result);
       }
     });
   }

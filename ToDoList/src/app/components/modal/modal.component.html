@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{data.header}}</h2>
+<mat-dialog-content>
+    <p>{{data.title}}</p>
+    <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="title" />
+    </mat-form-field>
+    <p>{{data.description}}</p>
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput [(ngModel)]="description" />
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
