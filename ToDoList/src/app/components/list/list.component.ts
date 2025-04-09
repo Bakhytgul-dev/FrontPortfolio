@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 
 import { Task } from '../../interfaces/task.interfaces';
@@ -12,13 +12,16 @@ import { Task } from '../../interfaces/task.interfaces';
 export class ListComponent {
   @Input() taskList?: Task[];
 
-  edit(event: Event): any {
-    console.log('edit', event);
+  @Output() editTask: EventEmitter<any> = new EventEmitter();
+  @Output() deleteTask: EventEmitter<any> = new EventEmitter();
+
+  edit(): any {
+    this.editTask.emit(1);
   }
   delete(): any {
-    console.log('delete');
+    this.deleteTask.emit(1);
   }
-  onClick(event: Event): any {
-    console.log('event', event);
+  onClick(): any {
+  
   }
 }

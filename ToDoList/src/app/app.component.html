@@ -178,13 +178,13 @@
     <button (click)="openDialog()">Add+</button>
   </div>
   <div>
-    <app-list [taskList]="taskList" />
+    <app-list
+      (editTask)="onEditTask($event)"
+      (deleteTask)="onDeleteTask($event)"
+      [taskList]="taskList"
+    />
     <div class="social-links">
       <button (click)="addTask()">Add</button>
-      <button (click)="updateTask($event, 0, { name: 'Task89', id: 89 })">
-        Update
-      </button>
-      <button (click)="deleteTask($event, 0)">Delete</button>
     </div>
   </div>
 </main>

@@ -75,12 +75,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.taskList = [...this.taskList, task];
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
-  updateTask(event: any, index: number, taskNew: any) {
-    this.taskList.splice(index, 1, taskNew);
+
+  onEditTask(num: Event) {
+    this.taskList.splice(1, 1, { name: 'Task45', id: 89});
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+    console.log('numEdit', num);
   }
-  deleteTask(event: any, index: number) {
-    this.taskList.splice(index, 1);
+
+  onDeleteTask(num: Event) {
+    this.taskList.splice(1, 1);
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+    console.log('numDelete', num);
   }
 }
