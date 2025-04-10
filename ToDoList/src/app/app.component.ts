@@ -21,6 +21,10 @@ import { LocalService } from '../services/local.service';
 import { ModalComponent } from './components/modal/modal.component';
 import { ListComponent } from './components/list/list.component';
 
+interface EventArg {
+  id: number,
+}
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -35,6 +39,7 @@ import { ListComponent } from './components/list/list.component';
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class AppComponent implements OnInit, OnDestroy {
   title = 'toDoList';
   taskList: any[] = [];
@@ -76,15 +81,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
 
-  onEditTask(num: Event) {
-    this.taskList.splice(1, 1, { name: 'Task45', id: 89});
+  onEditTask(eventArg: EventArg) {
+    const index = this.taskList.findIndex(item=> item.id === eventArg.id);
+    this.taskList.splice(index, 1, { name: 'Task45', id: 89});
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
-    console.log('numEdit', num);
+    console.log('numEdit', index);
   }
 
-  onDeleteTask(num: Event) {
-    this.taskList.splice(1, 1);
+  onDeleteTask(eventArg: EventArg) {
+    const index = this.taskList.findIndex(item=> item.id === eventArg.id);
+    this.taskList.splice(index, 1);
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
-    console.log('numDelete', num);
   }
 }

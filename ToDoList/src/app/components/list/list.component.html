@@ -2,8 +2,8 @@
   @for (task of taskList; track task) {
   <mat-list-item (click)="onClick()"
     >{{ task.name }}
-    <button (click)="edit()">Edit</button>
-    <button (click)="delete()">Delete</button></mat-list-item
+    <button (click)="edit(task)">Edit</button>
+    <button (click)="delete(task)">Delete</button></mat-list-item
   >
   }
 </mat-list>

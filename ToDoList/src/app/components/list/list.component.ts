@@ -15,11 +15,12 @@ export class ListComponent {
   @Output() editTask: EventEmitter<any> = new EventEmitter();
   @Output() deleteTask: EventEmitter<any> = new EventEmitter();
 
-  edit(): any {
-    this.editTask.emit(1);
+  edit(task: Task): void {
+    this.editTask.emit({id: task.id});
   }
-  delete(): any {
-    this.deleteTask.emit(1);
+  delete(task: Task): void {
+    // console.log('task', task);
+    this.deleteTask.emit({id: task.id});
   }
   onClick(): any {
   
