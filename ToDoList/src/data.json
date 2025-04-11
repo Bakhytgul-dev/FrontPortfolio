@@ -2,22 +2,27 @@
     "taskList": [
         {
             "name": "Task1",
+            "description": "smth",
             "id": 1
         },
         {
             "name": "Task2",
+            "description": "smth",
             "id": 2
         },
         {
             "name": "Task3",
+            "description": "smth",
             "id": 3
         },
         {
             "name": "Task4",
+            "description": "smth",
             "id": 4
         },
         {
             "name": "Task5",
+            "description": "smth",
             "id": 5
         }
     ]

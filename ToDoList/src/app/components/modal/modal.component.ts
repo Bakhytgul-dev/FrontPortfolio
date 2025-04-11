@@ -1,4 +1,4 @@
-import {Component, inject, model} from '@angular/core';
+import {Component, inject, model, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {
@@ -36,11 +36,17 @@ export interface DialogData {
 export class ModalComponent {
   readonly dialogRef = inject(MatDialogRef<ModalComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  readonly title = model(this.data.title);
-  readonly description = model(this.data.description);
+  readonly title = signal(this.data.title);
+  readonly description = signal(this.data.description);
+  readonly task = signal({ title: this.title(), description: this.description()});
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  protected onInputTitle(event: Event) {
+    this.title.set((event.target as HTMLInputElement).value);
+    this.task.set({ title: this.title(), description: this.description()});
+  }
+  protected onInputDescription(event: Event) {
+    this.description.set((event.target as HTMLInputElement).value);
+    this.task.set({ title: this.title(), description: this.description()});
   }
 }
 

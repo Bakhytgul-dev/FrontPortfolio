@@ -175,11 +175,11 @@
 
 <main>
   <div class="header">
-    <button (click)="openDialog()">Add+</button>
+    <button (click)="openAddDialog()">Add+</button>
   </div>
   <div>
     <app-list
-      (editTask)="onEditTask($event)"
+      (editTask)="openEditDialog($event)"
       (deleteTask)="onDeleteTask($event)"
       [taskList]="taskList"
     />

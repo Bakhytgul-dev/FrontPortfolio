@@ -22,7 +22,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { ListComponent } from './components/list/list.component';
 
 interface EventArg {
-  id: number,
+  id: number;
 }
 
 @Component({
@@ -39,7 +39,6 @@ interface EventArg {
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class AppComponent implements OnInit, OnDestroy {
   title = 'toDoList';
   taskList: any[] = [];
@@ -51,9 +50,39 @@ export class AppComponent implements OnInit, OnDestroy {
   readonly titleModel = model('');
   readonly dialog = inject(MatDialog);
 
-  openDialog(): void {
+  openAddDialog(): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: { header: 'Add new task', title: this.titleModel(), description: this.description() },
+      data: {
+        header: 'Add new task',
+        title: this.titleModel(),
+        description: this.description(),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(this.dialog);
+      console.log('[result]', result);
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        console.log('[result]', result);
+        // this.count = this.count + 1;
+        // const task = { name: 'Task' + this.count, id: this.count };
+
+        // this.taskList = [...this.taskList, task];
+        // this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+      }
+    });
+  }
+
+  openEditDialog(eventArg: EventArg): void {
+    const index = this.taskList.findIndex((item) => item.id === eventArg.id);
+    console.log('numEdit', index);
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data: {
+        header: 'Edit task',
+        title: this.titleModel(),
+        description: this.description(),
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -82,14 +111,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onEditTask(eventArg: EventArg) {
-    const index = this.taskList.findIndex(item=> item.id === eventArg.id);
-    this.taskList.splice(index, 1, { name: 'Task45', id: 89});
+    const index = this.taskList.findIndex((item) => item.id === eventArg.id);
+    this.taskList.splice(index, 1, { name: 'Task45', id: 89 });
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
     console.log('numEdit', index);
   }
 
   onDeleteTask(eventArg: EventArg) {
-    const index = this.taskList.findIndex(item=> item.id === eventArg.id);
+    const index = this.taskList.findIndex((item) => item.id === eventArg.id);
     this.taskList.splice(index, 1);
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
