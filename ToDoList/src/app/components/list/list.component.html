@@ -1,9 +1,11 @@
 <mat-list #tasks>
   @for (task of taskList; track task) {
-  <mat-list-item (click)="onClick()"
-    >{{ task.name }}
-    <button (click)="edit(task)">Edit</button>
-    <button (click)="delete(task)">Delete</button></mat-list-item
-  >
+  <section>
+    <div class="label">{{ task.name }}</div>
+    <div class="button-row">
+      <button mat-raised-button class="button-row-item"  (click)="edit(task)">Edit</button>
+      <button mat-raised-button class="button-row-item" (click)="delete(task)">Delete</button>
+    </div>
+  </section>
   }
 </mat-list>

@@ -20,6 +20,8 @@ import { LocalService } from '../services/local.service';
 
 import { ModalComponent } from './components/modal/modal.component';
 import { ListComponent } from './components/list/list.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 interface EventArg {
   id: number;
@@ -30,6 +32,8 @@ interface EventArg {
   imports: [
     RouterOutlet,
     ListComponent,
+    HeaderComponent,
+    FooterComponent,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,

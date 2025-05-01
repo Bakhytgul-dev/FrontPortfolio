@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
+
 
 import { Task } from '../../interfaces/task.interfaces';
 
 @Component({
   selector: 'app-list',
-  imports: [MatListModule],
+  imports: [MatListModule, MatButtonModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })
@@ -21,8 +23,5 @@ export class ListComponent {
   delete(task: Task): void {
     // console.log('task', task);
     this.deleteTask.emit({id: task.id});
-  }
-  onClick(): any {
-  
   }
 }
