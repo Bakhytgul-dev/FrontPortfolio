@@ -22,6 +22,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { ListComponent } from './components/list/list.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { Observable } from 'rxjs';
 
 interface EventArg {
   id: number;
@@ -44,7 +45,7 @@ interface EventArg {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'toDoList';
+  title = 'Task tracker';
   taskList: any[] = [];
   count = 0;
 
@@ -63,17 +64,14 @@ export class AppComponent implements OnInit, OnDestroy {
       },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(this.dialog);
-      console.log('[result]', result);
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         console.log('[result]', result);
-        // this.count = this.count + 1;
-        // const task = { name: 'Task' + this.count, id: this.count };
+        this.count = this.count + 1;
+        const task = { name: result.title, description: result.description, id: this.count };
 
-        // this.taskList = [...this.taskList, task];
-        // this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+        this.taskList = [...this.taskList, task];
+        this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
       }
     });
   }
@@ -103,15 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
   ngOnDestroy(): void {
-    //this.localeStore.removeData('taskList');
-  }
-
-  addTask() {
-    this.count = this.count + 1;
-    const task = { name: 'Task' + this.count, id: this.count };
-
-    this.taskList = [...this.taskList, task];
-    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+    this.localeStore.removeData('taskList');
   }
 
   onEditTask(eventArg: EventArg) {
