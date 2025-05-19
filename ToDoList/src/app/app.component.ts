@@ -22,7 +22,8 @@ import { ModalComponent } from './components/modal/modal.component';
 import { ListComponent } from './components/list/list.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { Task } from './interfaces/task.interfaces';
 
 interface EventArg {
   id: number;
@@ -45,11 +46,22 @@ interface EventArg {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private storageSubscription: Subscription;
+
+  value: Task[] = [];
   title = 'Task tracker';
-  taskList: any[] = [];
+  taskList: Task[] = [];
   count = 0;
 
-  constructor(private localeStore: LocalService) {}
+  constructor(private localeStore: LocalService) {
+    this.storageSubscription = this.localeStore.storage$.subscribe((value) => {
+      console.log('value', value);
+      if (value) {
+        this.value = JSON.parse(value);
+      }
+      console.log('Thisvalue', this.value);
+    });
+  }
 
   readonly description = signal('');
   readonly titleModel = model('');
@@ -67,9 +79,13 @@ export class AppComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         console.log('[result]', result);
-        this.count = this.count + 1;
-        const task = { name: result.title, description: result.description, id: this.count };
+        const task = {
+          name: result.title,
+          description: result.description,
+          id: this.count,
+        };
 
+        this.count++;
         this.taskList = [...this.taskList, task];
         this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
       }
@@ -102,6 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.localeStore.removeData('taskList');
+    this.storageSubscription.unsubscribe();
   }
 
   onEditTask(eventArg: EventArg) {
