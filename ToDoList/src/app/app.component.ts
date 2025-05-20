@@ -6,6 +6,7 @@ import {
   model,
   signal,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -48,17 +49,17 @@ interface EventArg {
 export class AppComponent implements OnInit, OnDestroy {
   private storageSubscription: Subscription;
 
-  value: Task[] = [];
+  taskList: Task[] = [];
   title = 'Task tracker';
   count = 0;
 
-  constructor(private localeStore: LocalService) {
-    this.storageSubscription = this.localeStore.storage$.subscribe((value) => {
-      console.log('value', value);
-      if (value) {
-        this.value = JSON.parse(value);
+  constructor(private localeStore: LocalService, private ref: ChangeDetectorRef) {
+    this.storageSubscription = this.localeStore.storage$.subscribe((taskList) => {
+      console.log('taskList', taskList);
+      if (taskList) {
+        this.taskList = JSON.parse(taskList);
       }
-      console.log('Thisvalue', this.value);
+      console.log('ThistaskList', this.taskList);
     });
   }
 
@@ -84,16 +85,16 @@ export class AppComponent implements OnInit, OnDestroy {
         };
 
         this.count++;
-        this.value = [...this.value, task];
-        this.localeStore.saveData('value', JSON.stringify(this.value));
+        this.taskList = [...this.taskList, task];
+        this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+        this.ref.detectChanges();
       }
     });
   }
 
   openEditDialog(eventArg: EventArg): void {
-    const itemEditIndex = this.value.findIndex((item) => item.id === eventArg.id);
-    const itemEdit = this.value.find((item) => item.id === eventArg.id);
-    console.log('numEdit', itemEdit);
+    const itemEditIndex = this.taskList.findIndex((item) => item.id === eventArg.id);
+    const itemEdit = this.taskList.find((item) => item.id === eventArg.id);
     const dialogRef = this.dialog.open(ModalComponent, {
       data: {
         header: 'Edit task',
@@ -103,7 +104,6 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         const task = {
           name: result.title,
@@ -112,32 +112,26 @@ export class AppComponent implements OnInit, OnDestroy {
         };
 
         this.count++;
-        this.value.splice(itemEditIndex, 1, task);
-        this.localeStore.saveData('value', JSON.stringify(this.value));
+        this.taskList.splice(itemEditIndex, 1, task);
+        this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
+        this.ref.detectChanges();
       }
     });
   }
 
   ngOnInit(): void {
-    this.value = tasks;
+    this.taskList = tasks;
     this.count = tasks.length;
-    this.localeStore.saveData('value', JSON.stringify(this.value));
+    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
   ngOnDestroy(): void {
-    this.localeStore.removeData('value');
+    this.localeStore.removeData('taskList');
     this.storageSubscription.unsubscribe();
   }
 
-  onEditTask(eventArg: EventArg) {
-    const index = this.value.findIndex((item) => item.id === eventArg.id);
-    this.value.splice(index, 1, { name: 'Task45', id: 89, description: '' });
-    this.localeStore.saveData('value', JSON.stringify(this.value));
-    console.log('numEdit', index);
-  }
-
   onDeleteTask(eventArg: EventArg) {
-    const index = this.value.findIndex((item) => item.id === eventArg.id);
-    this.value.splice(index, 1);
-    this.localeStore.saveData('value', JSON.stringify(this.value));
+    const index = this.taskList.findIndex((item) => item.id === eventArg.id);
+    this.taskList.splice(index, 1);
+    this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
 }
