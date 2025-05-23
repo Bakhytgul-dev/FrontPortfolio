@@ -10,25 +10,22 @@ import {
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { v4 as uuidv4 } from 'uuid';
+import { Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { taskList as tasks } from '../data.json';
-
 import { LocalService } from '../services/local.service';
-
 import { ModalComponent } from './components/modal/modal.component';
 import { ListComponent } from './components/list/list.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { Subscription } from 'rxjs';
 import { Task } from './interfaces/task.interfaces';
-
-interface EventArg {
-  id: number;
-}
+import { EventArg } from './interfaces/event.interface';
+import { TITLE, TITLE_MODAL_ADD, TITLE_MODAL_EDIT } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -50,17 +47,17 @@ export class AppComponent implements OnInit, OnDestroy {
   private storageSubscription: Subscription;
 
   taskList: Task[] = [];
-  title = 'Task tracker';
-  count = 0;
+  title = TITLE;
 
-  constructor(private localeStore: LocalService, private ref: ChangeDetectorRef) {
-    this.storageSubscription = this.localeStore.storage$.subscribe((taskList) => {
-      console.log('taskList', taskList);
-      if (taskList) {
-        this.taskList = JSON.parse(taskList);
+  constructor(
+    private localeStore: LocalService,
+    private ref: ChangeDetectorRef
+  ) {
+    this.storageSubscription = this.localeStore.storage$.subscribe(
+      (valueStor) => {
+        this.taskList = valueStor && JSON.parse(valueStor);
       }
-      console.log('ThistaskList', this.taskList);
-    });
+    );
   }
 
   readonly description = signal('');
@@ -70,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ModalComponent, {
       data: {
-        header: 'Add new task',
+        header: TITLE_MODAL_ADD,
         title: this.titleModel(),
         description: this.description(),
       },
@@ -78,14 +75,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        const task = {
+        this.taskList.push({
           name: result.title,
           description: result.description,
-          id: this.count,
-        };
-
-        this.count++;
-        this.taskList = [...this.taskList, task];
+          id: uuidv4(),
+        });
         this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
         this.ref.detectChanges();
       }
@@ -93,11 +87,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   openEditDialog(eventArg: EventArg): void {
-    const itemEditIndex = this.taskList.findIndex((item) => item.id === eventArg.id);
+    const itemEditIndex = this.taskList.findIndex(
+      (item) => item.id === eventArg.id
+    );
     const itemEdit = this.taskList.find((item) => item.id === eventArg.id);
     const dialogRef = this.dialog.open(ModalComponent, {
       data: {
-        header: 'Edit task',
+        header: TITLE_MODAL_EDIT,
         title: itemEdit?.name,
         description: itemEdit?.description,
       },
@@ -105,14 +101,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        const task = {
+        this.taskList.splice(itemEditIndex, 1, {
           name: result.title,
           description: result.description,
-          id: this.count,
-        };
-
-        this.count++;
-        this.taskList.splice(itemEditIndex, 1, task);
+          id: eventArg.id,
+        });
         this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
         this.ref.detectChanges();
       }
@@ -121,7 +114,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.taskList = tasks;
-    this.count = tasks.length;
     this.localeStore.saveData('taskList', JSON.stringify(this.taskList));
   }
   ngOnDestroy(): void {
